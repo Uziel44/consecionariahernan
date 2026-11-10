@@ -227,6 +227,29 @@ main:focus{outline:none}
 .car__more{display:inline-flex;align-items:center;gap:2px;color:var(--yellow);font-weight:700;font-size:.9375rem}
 .plate{display:inline-block;padding:7px 14px 5px;border-radius:5px;background:var(--yellow);color:var(--black);font:900 1.75rem/1 var(--display);letter-spacing:.02em;box-shadow:inset 0 0 0 2px var(--yellow),inset 0 0 0 4px var(--black)}
 
+/* ---------- Mobile: tarjetas en 2 columnas ---------- */
+@media (max-width:599px){
+  :root{--gap:12px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rail>li{flex-basis:calc((100% - var(--gap)) / 2)}
+  .car{--cut:12px}
+  .car__year{padding:6px 9px 4px;font-size:1.2rem}
+  .car__sede{display:none}
+  .car__tags{left:6px;right:6px;bottom:6px;gap:4px}
+  .tag{padding:4px 7px 3px;font-size:.82rem}
+  .car__body{gap:10px;padding:12px 12px 14px}
+  .car__name{font-size:1.3rem}
+  .car__ver{font-size:.8rem;margin-top:3px}
+  .car__specs{flex-direction:column;gap:4px;padding:8px 0;font-size:.78rem}
+  .car__specs .i{width:.95em;height:.95em}
+  .car__foot{flex-direction:column;align-items:flex-start;gap:6px}
+  .car__more{display:none}
+  .plate{padding:5px 8px 3px;font-size:1.2rem}
+  .client{--cut:12px}
+  .client__name{font-size:1.2rem}
+  .client__body{padding:12px}
+}
+
 /* ---------- Siluetas (respaldo si falta una foto) ---------- */
 .art{display:block;height:auto;aspect-ratio:480/190;overflow:visible}
 :where(.art){width:100%}
