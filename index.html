@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="hilux.jpg" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoDealer","name":"Hernán Automotores","description":"Venta de autos usados en Río Cuarto y Villa María, Córdoba, Argentina.","areaServed":[{"@type":"City","name":"Río Cuarto"},{"@type":"City","name":"Villa María"}]}
 </script>
@@ -52,19 +53,20 @@ a{color:inherit}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
+main:focus{outline:none}
 :focus-visible{outline:3px solid var(--focus,var(--yellow));outline-offset:3px}
-.sec--light,.sec--yellow,.topbar,.deliver,.quick,.on-yellow{--focus:var(--black)}
+.sec--light,.sec--yellow,.topbar,.deliver,.quick,.on-yellow,.searchbox{--focus:var(--black)}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.skip{position:absolute;left:-999px;top:0;z-index:100;padding:12px 18px;background:var(--yellow);color:#000;font-weight:700}
+.skip{position:absolute;left:-999px;top:0;z-index:100;padding:12px 18px;background:var(--black);color:var(--yellow);font-weight:700;box-shadow:0 0 0 3px var(--yellow)}
 .skip:focus{left:16px;top:16px}
 .wrap{width:min(1240px,calc(100% - 2 * var(--gutter)));margin-inline:auto}
 .i{width:1.25em;height:1.25em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Esquina cortada: el rasgo de forma de toda la página */
-.btn,.quick__btn,.car,.client,.panel,.svc,.route,.modal,.brand-tile,.fab,.sede{
+.btn,.quick__btn,.car,.client,.panel,.svc,.route,.modal,.modal__close,.brand-tile,.fab,.sede{
   clip-path:polygon(0 0,calc(100% - var(--cut,16px)) 0,100% var(--cut,16px),100% 100%,0 100%);
 }
-.btn:focus-visible,.quick__btn:focus-visible,.brand-tile:focus-visible,.fab:focus-visible{clip-path:none}
+.btn:focus-visible,.quick__btn:focus-visible,.brand-tile:focus-visible,.fab:focus-visible,.modal__close:focus-visible{clip-path:none}
 @supports selector(:has(a)){
   .car:has(.car__open:focus-visible){clip-path:none;outline:3px solid var(--focus,var(--yellow));outline-offset:3px}
   .car__open:focus-visible{outline:none}
@@ -81,15 +83,15 @@ button{cursor:pointer}
 .icon-btn{display:inline-grid;place-items:center;width:46px;height:46px;border:0;background:transparent;color:inherit;padding:0}
 .arrow{display:grid;place-items:center;width:52px;height:52px;border:0;background:var(--black);color:var(--yellow);padding:0;transition:opacity .15s}
 .sec--dark .arrow{background:var(--yellow);color:var(--black)}
-.arrow:disabled{opacity:.3;cursor:default}
-.link-btn{background:none;border:0;padding:0;font-weight:700;color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.arrow[aria-disabled="true"]{opacity:.3;cursor:default}
+.link-btn{display:inline-flex;align-items:center;min-height:44px;background:none;border:0;padding:0;font-weight:700;color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
 .sec--dark .link-btn{text-decoration-color:var(--yellow)}
 
 /* ---------- Barra superior ---------- */
 .topbar{background:var(--yellow);color:var(--black)}
 .topbar__in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:42px;font-size:.875rem;font-weight:600}
 .topbar__links{display:flex;align-items:center;gap:22px;margin-left:auto}
-.topbar__link{display:inline-flex;align-items:center;gap:8px;padding:0;background:none;border:0;font-weight:700;text-decoration:none}
+.topbar__link{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0;background:none;border:0;font-weight:700;text-decoration:none}
 .topbar__link:hover{text-decoration:underline;text-underline-offset:3px}
 .topbar__text{display:none}
 @media (min-width:700px){.topbar__text{display:block}}
@@ -110,12 +112,6 @@ button{cursor:pointer}
 .nav__item.open>.nav__sub{display:block}
 .nav__sub a{display:block;padding:13px 20px;color:var(--chalk);font-weight:500;text-decoration:none}
 .nav__sub a:hover,.nav__sub a:focus-visible{background:var(--yellow);color:var(--black);outline:none}
-@media (min-width:980px){
-  .nav__item:focus-within>.nav__sub{display:block}
-}
-@media (min-width:980px) and (hover:hover){
-  .nav__item:hover>.nav__sub{display:block}
-}
 .site-head__tools{display:flex;align-items:center;gap:8px}
 .head-wa{--cut:8px}
 .nav-toggle{display:none;color:var(--chalk)}
@@ -127,7 +123,8 @@ button{cursor:pointer}
   .nav__link{width:100%;justify-content:space-between;min-height:58px;padding:0;border-bottom:1px solid var(--steel);font-size:1.25rem}
   .nav__sub{position:static;min-width:0;padding:0 0 10px 16px;background:none;border:0}
   .nav__sub a{padding:13px 0;color:var(--smoke)}
-  .nav__sub a:hover,.nav__sub a:focus-visible{background:none;color:var(--yellow)}
+  .nav__sub a:hover{background:none;color:var(--yellow)}
+  .nav__sub a:focus-visible{background:none;color:var(--yellow);outline:3px solid var(--yellow);outline-offset:-3px}
 }
 @media (max-width:559px){
   .head-wa{width:46px;padding:0}
@@ -136,37 +133,43 @@ button{cursor:pointer}
   .logo__sub{letter-spacing:.28em}
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero: panel negro con borde amarillo en diagonal sobre la foto ---------- */
 .hero{position:relative;background:var(--black);color:var(--chalk);overflow:hidden}
-.slide{display:none}
-.slide.is-active{display:block}
-.slide__in{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-items:center;padding-block:44px 24px}
-.slide__text{position:relative;z-index:2}
+#slides{display:grid}
+.slide{grid-area:1/1;position:relative;visibility:hidden}
+.slide.is-active{visibility:visible}
+.slide__photo{display:block;width:100%;aspect-ratio:4/3;max-height:420px;object-fit:cover;object-position:var(--pos,50% 50%);background:var(--graphite)}
+.slide__in{display:grid;padding-block:28px 12px}
+.slide__text{position:relative;z-index:3}
 .slide__title{margin:0 0 20px;font:900 clamp(3.25rem,7.6vw,7.25rem)/.88 var(--display);text-transform:uppercase}
 .slide__lead{max-width:28ch;margin:0 0 30px;font-size:clamp(1.1rem,1.7vw,1.4rem);color:#dcdcd8}
 .slide__actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px}
 .slide__link{font-weight:700;text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:6px}
 .slide__link:hover{color:var(--yellow)}
-.slide__art{position:relative;margin-top:18px}
-.slide__disc{position:absolute;right:2%;top:50%;width:min(86%,520px);aspect-ratio:1;border-radius:50%;background:var(--yellow);transform:translateY(-54%)}
-.slide__road{position:absolute;left:-30%;right:-60vw;bottom:calc(6.1% - 3px);height:6px;background:linear-gradient(90deg,var(--yellow) 0 50%,transparent 0) 0 0/128px 100% repeat-x;-webkit-mask-image:linear-gradient(90deg,transparent,#000 38%);mask-image:linear-gradient(90deg,transparent,#000 38%)}
-.slide__car{position:relative;width:min(118%,720px);margin-left:auto;margin-right:-6%}
-.slide.is-active .slide__car{animation:arrive 1.6s cubic-bezier(.1,.75,.2,1) both}
-.slide.is-active .slide__road{animation:road 1.6s cubic-bezier(.1,.75,.2,1) both}
-@keyframes arrive{from{transform:translateX(75%)}to{transform:none}}
-@keyframes road{from{background-position-x:-768px}to{background-position-x:0}}
 @media (min-width:900px){
-  .slide__in{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;min-height:clamp(540px,calc(100svh - 230px),720px);padding-block:56px 28px}
-  .slide__art{margin-top:0}
-  .slide__car{width:min(124%,760px);margin-left:-8%;margin-right:-10%}
+  .slide{--panel:52vw;display:grid;align-items:center;min-height:clamp(540px,calc(100svh - 230px),700px)}
+  .slide__photo{position:absolute;top:0;right:0;z-index:0;width:64%;height:100%;max-height:none;aspect-ratio:auto}
+  .slide::before,.slide::after{content:"";position:absolute;top:0;bottom:0;left:0;clip-path:polygon(0 0,100% 0,calc(100% - 90px) 100%,0 100%)}
+  .slide::after{z-index:1;width:calc(var(--panel) + 18px);background:var(--yellow)}
+  .slide::before{z-index:2;width:var(--panel);background:var(--black)}
+  .slide__in{position:relative;z-index:3;padding-block:56px}
+  .slide__text{width:min(100%,calc(var(--panel) - 110px - max(var(--gutter),(100vw - 1240px) / 2)))}
 }
-.hero__ctrl{display:flex;align-items:center;gap:6px;padding-bottom:26px}
+/* El único movimiento autónomo de la página: el panel entra y la foto se asienta */
+.slide.is-active .slide__photo{animation:settle 1.5s cubic-bezier(.1,.75,.2,1) both}
+@keyframes settle{from{transform:scale(1.08);opacity:.35}to{transform:none;opacity:1}}
+@media (min-width:900px){
+  .slide.is-active::before{animation:panel 1s cubic-bezier(.2,.8,.2,1) both}
+  .slide.is-active::after{animation:panel 1s cubic-bezier(.2,.8,.2,1) .07s both}
+  @keyframes panel{from{transform:translateX(-100%)}to{transform:none}}
+}
+.hero__ctrl{display:flex;align-items:center;gap:6px;padding-bottom:22px}
 .hero__ctrl .arrow{width:44px;height:44px;background:var(--steel);color:var(--chalk)}
 .hero__ctrl .arrow:hover{background:var(--yellow);color:var(--black)}
 .dots{display:flex;align-items:center;margin:0 6px}
-.dot{width:44px;padding:9px 0;border:0;background:none}
-.dot::before{content:"";display:block;height:6px;background:var(--steel);transition:background-color .2s}
-.dot[aria-current="true"]::before{background:var(--yellow)}
+.dot{width:44px;padding:19px 0;border:0;background:none}
+.dot::before{content:"";display:block;height:6px;background:var(--smoke);opacity:.55;transition:background-color .2s,opacity .2s}
+.dot[aria-current="true"]::before{background:var(--yellow);opacity:1}
 .hero__pause{margin-left:auto;color:var(--chalk)}
 .hero__stripe{height:14px;background:repeating-linear-gradient(-45deg,var(--yellow) 0 16px,var(--black) 16px 32px)}
 
@@ -194,7 +197,7 @@ button{cursor:pointer}
 .sec__count{font-weight:700}
 
 /* ---------- Carruseles ---------- */
-.rail{display:flex;gap:var(--gap);margin:0;padding:0 0 4px;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.rail{display:flex;gap:var(--gap);margin:-8px -8px -8px;padding:8px 8px 12px;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:8px;scrollbar-width:none;overscroll-behavior-x:contain}
 .rail::-webkit-scrollbar{display:none}
 .rail>li{flex:0 0 min(84%,330px);scroll-snap-align:start}
 @media (min-width:760px){.rail>li{flex-basis:calc((100% - var(--gap)) / 2)}}
@@ -204,12 +207,12 @@ button{cursor:pointer}
 /* ---------- Tarjeta de auto ---------- */
 .car{--cut:18px;position:relative;display:flex;flex-direction:column;height:100%;background:var(--black);color:var(--chalk)}
 .sec--dark .car{--media:var(--black);background:var(--graphite)}
-.car__media{position:relative;aspect-ratio:16/10;background:var(--media,var(--graphite));overflow:hidden}
+.car__media{position:relative;aspect-ratio:3/2;background:var(--media,var(--graphite));overflow:hidden}
 .car__art{position:absolute;left:8%;bottom:11%;width:84%;height:auto}
 .car__photo{width:100%;height:100%;object-fit:cover}
 .car__year{position:absolute;left:0;top:0;padding:9px 14px 6px;background:var(--yellow);color:var(--black);font:900 1.65rem/1 var(--display)}
-.car__sede{position:absolute;right:28px;top:12px;display:flex;align-items:center;gap:5px;color:var(--smoke);font-size:.8125rem;font-weight:600}
-.car__sede .i{width:1em;height:1em}
+.car__sede{position:absolute;right:26px;top:10px;display:flex;align-items:center;gap:5px;padding:3px 9px 3px 7px;background:rgba(0,0,0,.78);color:var(--chalk);font-size:.8125rem;font-weight:600}
+.car__sede .i{width:1em;height:1em;color:var(--yellow)}
 .car__tags{position:absolute;left:12px;bottom:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px}
 .tag{padding:5px 10px 4px;background:var(--chalk);color:var(--black);font:800 1rem/1 var(--display);letter-spacing:.02em}
 .car__body{display:flex;flex:1;flex-direction:column;gap:16px;padding:18px 20px 20px}
@@ -224,10 +227,10 @@ button{cursor:pointer}
 .car__more{display:inline-flex;align-items:center;gap:2px;color:var(--yellow);font-weight:700;font-size:.9375rem}
 .plate{display:inline-block;padding:7px 14px 5px;border-radius:5px;background:var(--yellow);color:var(--black);font:900 1.75rem/1 var(--display);letter-spacing:.02em;box-shadow:inset 0 0 0 2px var(--yellow),inset 0 0 0 4px var(--black)}
 
-/* ---------- Siluetas (planos en línea) ---------- */
-.art{display:block;width:100%;height:auto;aspect-ratio:480/190;overflow:visible}
+/* ---------- Siluetas (respaldo si falta una foto) ---------- */
+.art{display:block;height:auto;aspect-ratio:480/190;overflow:visible}
+:where(.art){width:100%}
 .art--line{--car:transparent;--edge:var(--yellow);--glass:rgba(255,212,0,.16)}
-.art--hero{--car:var(--black);--edge:var(--yellow);--glass:#38404a}
 .art--solid{--car:var(--black);--edge:var(--black);--glass:var(--yellow)}
 .car-body{fill:var(--car,transparent);stroke:var(--edge,#ffd400);stroke-width:2.5;stroke-linejoin:round}
 .car-glass{fill:var(--glass,rgba(255,212,0,.16));stroke:var(--edge,#ffd400);stroke-width:1.5;stroke-linejoin:round}
@@ -256,7 +259,7 @@ button{cursor:pointer}
 .route__stop{display:grid;justify-items:center;gap:10px;font:800 1.5rem/1 var(--display);text-transform:uppercase;text-align:center}
 .route__stop .i{width:2rem;height:2rem;color:var(--yellow)}
 .route__road{position:relative;flex:1;height:6px;margin:0 14px;background:linear-gradient(90deg,var(--yellow) 0 50%,transparent 0) 0 0/28px 100% repeat-x}
-.route__car{position:absolute;left:50%;bottom:6px;width:104px;transform:translateX(-50%)}
+.route__car{position:absolute;left:50%;bottom:6px;width:104px;max-width:none;transform:translateX(-50%)}
 @media (min-width:900px){.deliver__in{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
 
 /* ---------- Servicios ---------- */
@@ -298,9 +301,11 @@ button{cursor:pointer}
 .field label{font-weight:700;font-size:.9375rem}
 .opt{font-weight:500;opacity:.75}
 .input,.select,.textarea{width:100%;min-height:52px;padding:10px 14px;border:2px solid var(--black);border-radius:0;background:var(--chalk);color:var(--black)}
+.input::placeholder,.textarea::placeholder{color:var(--slate);opacity:1}
 .textarea{min-height:120px;resize:vertical}
 .select{appearance:none;-webkit-appearance:none;padding-right:44px;background:var(--chalk) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/18px}
 .form-error{padding:10px 14px;background:var(--black);color:var(--yellow);font-weight:600}
+.input[aria-invalid="true"],.textarea[aria-invalid="true"]{outline:3px solid var(--black);outline-offset:2px}
 
 /* ---------- Continuá tu búsqueda ---------- */
 .finder{display:grid;gap:18px;align-items:end}
@@ -334,7 +339,7 @@ button{cursor:pointer}
 .social a{display:grid;place-items:center;width:44px;height:44px;border:2px solid var(--steel);color:var(--chalk)}
 .social a:hover{background:var(--yellow);border-color:var(--yellow);color:var(--black)}
 .news{display:grid;gap:12px;margin-top:16px}
-.news .input{background:var(--graphite);border-color:var(--line);color:var(--chalk)}
+.news .input{background:var(--graphite);border-color:var(--smoke);color:var(--chalk)}
 .news .input::placeholder{color:var(--smoke)}
 .foot__legal{margin-top:clamp(36px,5vw,64px);padding-top:22px;border-top:1px solid var(--steel);color:var(--smoke);font-size:.875rem}
 
@@ -342,12 +347,12 @@ button{cursor:pointer}
 dialog{max-width:100vw;max-height:100vh;max-height:100dvh;padding:0;border:0;background:transparent;color:inherit;overflow:visible}
 dialog::backdrop{background:rgba(0,0,0,.8)}
 .modal{--cut:24px;position:relative;display:grid;width:min(980px,calc(100vw - 24px));max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow:auto;background:var(--black);color:var(--chalk)}
-.modal__close{position:absolute;top:0;right:0;z-index:3;display:grid;place-items:center;width:52px;height:52px;padding:0;border:0;background:var(--yellow);color:var(--black)}
+.modal__close{--cut:24px;position:absolute;top:0;right:0;z-index:3;display:grid;place-items:center;width:52px;height:52px;padding:0;border:0;background:var(--yellow);color:var(--black)}
 .modal__close:focus-visible{outline-offset:-5px;outline-color:var(--black)}
-.modal__media{position:relative;display:grid;place-items:center;min-height:260px;padding:40px 28px 28px;background:var(--graphite)}
-.modal__media .art{width:100%}
-.modal__media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.modal__year{position:absolute;left:0;top:0;padding:10px 16px 7px;background:var(--yellow);color:var(--black);font:900 2rem/1 var(--display)}
+.modal__media{position:relative;min-height:260px;background:var(--graphite)}
+.modal__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.modal__media .art{position:absolute;left:8%;top:50%;width:84%;transform:translateY(-50%)}
+.modal__year{position:absolute;left:0;top:0;z-index:1;padding:10px 16px 7px;background:var(--yellow);color:var(--black);font:900 2rem/1 var(--display)}
 .modal__info{display:flex;flex-direction:column;gap:20px;padding:34px 30px 30px}
 .modal__title{font:900 clamp(2.2rem,4.4vw,3.2rem)/.92 var(--display);text-transform:uppercase}
 .modal__ver{margin-top:6px;color:var(--smoke)}
@@ -359,10 +364,10 @@ dialog::backdrop{background:rgba(0,0,0,.8)}
 .modal__desc{color:#dcdcd8}
 .modal__actions{display:flex;flex-wrap:wrap;gap:10px}
 @media (min-width:760px){.modal{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.modal__media{min-height:100%}}
-dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
-.searchbox{position:relative;padding:clamp(28px,4vw,52px) 0 clamp(28px,4vw,48px);background:var(--yellow);color:var(--black);--focus:var(--black)}
+dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0;overflow:auto}
+.searchbox{position:relative;padding:clamp(28px,4vw,52px) 0 clamp(28px,4vw,48px);background:var(--yellow);color:var(--black)}
 .searchbox__close{position:absolute;right:0;top:-6px;color:var(--black)}
-.searchbox label{display:block;margin-bottom:12px;font:900 clamp(2rem,4.4vw,3.4rem)/.95 var(--display);text-transform:uppercase}
+.searchbox label{display:block;margin-bottom:12px;padding-right:48px;font:900 clamp(2rem,4.4vw,3.4rem)/.95 var(--display);text-transform:uppercase}
 .searchbox__row{display:flex;flex-wrap:wrap;gap:10px}
 .searchbox .input{flex:1 1 280px;min-height:60px;font-size:1.2rem}
 .searchbox__hints{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:18px;font-weight:600}
@@ -371,9 +376,11 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
 /* ---------- Flotantes ---------- */
 .fab{--cut:12px;position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 20px;background:var(--yellow);color:var(--black);font:800 1.25rem/1 var(--display);text-decoration:none}
 .fab:hover{background:var(--chalk)}
+.fab:focus-visible{outline:3px solid #000;outline-offset:0;box-shadow:0 0 0 6px #fff}
 .fab .i{width:1.5rem;height:1.5rem}
 @media (max-width:699px){.fab{width:56px;padding:0;justify-content:center}.fab span{display:none}}
 .totop{position:fixed;left:16px;bottom:16px;z-index:40;width:52px;height:52px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:var(--black);color:var(--yellow)}
+.totop:focus-visible{outline:3px solid var(--yellow);outline-offset:0;box-shadow:0 0 0 6px #000}
 .totop__ring{position:absolute;inset:0;width:100%;height:100%}
 .totop__bg,.totop__bar{fill:none;stroke-width:3}
 .totop__bg{stroke:var(--steel)}
@@ -395,7 +402,9 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
   HERNÁN AUTOMOTORES · landing de autos usados
   Todo lo que Hernán puede querer cambiar está en el JavaScript
   del final del archivo: CONFIG (contacto y sedes), AUTOS (stock) y
-  CLIENTES. No hace falta tocar el resto.
+  CLIENTES. Las fotos están en esta misma carpeta (1.jpg, 2.jpg,
+  hilux.jpg, 4.webp y 6.jpg): para cambiar una, reemplazá el archivo
+  o escribí otro nombre en el campo "foto".
   ============================================================
 -->
 
@@ -425,7 +434,7 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
     <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
 
-    <!-- Siluetas: viewBox 480x190, miran a la derecha -->
+    <!-- Siluetas: viewBox 480x190, miran a la derecha. Solo se ven si falta una foto. -->
     <symbol id="car-sedan" viewBox="0 0 480 190">
       <path class="car-body" d="M26 156 L24 134 Q24 121 40 117 L126 108 L170 68 Q176 62 186 62 L300 62 Q310 62 318 69 L356 106 L430 112 Q454 116 458 134 L460 156 Q460 166 450 166 L36 166 Q26 166 26 156 Z"/>
       <path class="car-glass" d="M176 74 L236 74 L236 106 L148 109 Z"/>
@@ -506,7 +515,7 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
       <ul class="nav__list" role="list">
         <li class="nav__item"><a class="nav__link" href="#stock" data-all>Comprar un auto</a></li>
         <li class="nav__item">
-          <button class="nav__link" type="button" data-sub aria-expanded="false" aria-haspopup="true">Sedes<svg class="i" aria-hidden="true"><use href="#i-down"/></svg></button>
+          <button class="nav__link" type="button" data-sub aria-expanded="false">Sedes<svg class="i" aria-hidden="true"><use href="#i-down"/></svg></button>
           <ul class="nav__sub" role="list">
             <li><a href="#stock" data-sede="rio-cuarto">Río Cuarto</a></li>
             <li><a href="#stock" data-sede="villa-maria">Villa María</a></li>
@@ -514,7 +523,7 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
           </ul>
         </li>
         <li class="nav__item">
-          <button class="nav__link" type="button" data-sub aria-expanded="false" aria-haspopup="true">Servicios<svg class="i" aria-hidden="true"><use href="#i-down"/></svg></button>
+          <button class="nav__link" type="button" data-sub aria-expanded="false">Servicios<svg class="i" aria-hidden="true"><use href="#i-down"/></svg></button>
           <ul class="nav__sub" role="list">
             <li><a href="#financiacion">Financiación</a></li>
             <li><a href="#seguros">Seguros</a></li>
@@ -530,37 +539,36 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
       <a class="btn btn--sm head-wa" data-wa href="#" aria-label="Escribir por WhatsApp">
         <svg class="i" aria-hidden="true"><use href="#i-wa"/></svg><span class="head-wa__label">WhatsApp</span>
       </a>
-      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menú">
         <svg class="i" aria-hidden="true"><use href="#i-menu"/></svg>
       </button>
     </div>
   </div>
 </header>
 
-<main id="contenido">
+<main id="contenido" tabindex="-1">
+<h1 class="sr-only">Hernán Automotores: autos usados en Río Cuarto y Villa María</h1>
 
 <!-- ============ Hero ============ -->
-<section class="hero" aria-roledescription="carousel" aria-label="Novedades de Hernán Automotores">
-  <div id="slides">
+<section class="hero" aria-roledescription="carrusel" aria-label="Novedades de Hernán Automotores">
+  <div id="slides" aria-live="off">
 
-    <article class="slide is-active" aria-roledescription="slide" aria-label="1 de 3">
+    <article class="slide is-active" role="group" aria-roledescription="diapositiva" aria-label="1 de 3">
+      <img class="slide__photo" src="hilux.jpg" alt="Toyota Hilux blanca doble cabina" width="1200" height="900" fetchpriority="high" style="--pos:50% 85%">
       <div class="wrap slide__in">
         <div class="slide__text">
-          <h1 class="slide__title">Tu próximo auto, fácil y seguro.</h1>
+          <h2 class="slide__title">Tu próximo auto, fácil y seguro.</h2>
           <p class="slide__lead">Comprá y vendé tu auto usado con financiación.</p>
           <div class="slide__actions">
             <a class="btn" href="#stock" data-all>Comprá un auto</a>
             <a class="slide__link" data-wa data-wa-text="Hola Hernán, quiero cambiar o vender mi auto." href="#">Cambiá o vendé tu auto ahora</a>
           </div>
         </div>
-        <div class="slide__art" aria-hidden="true">
-          <span class="slide__disc"></span><span class="slide__road"></span>
-          <svg class="art art--hero slide__car" viewBox="0 0 480 190"><use href="#car-pickup" transform="translate(480 0) scale(-1 1)"/></svg>
-        </div>
       </div>
     </article>
 
-    <article class="slide" aria-roledescription="slide" aria-label="2 de 3">
+    <article class="slide" role="group" aria-roledescription="diapositiva" aria-label="2 de 3">
+      <img class="slide__photo" src="2.jpg" alt="Ford Fiesta Kinetic azul" width="1024" height="640" decoding="async" style="--pos:50% 50%">
       <div class="wrap slide__in">
         <div class="slide__text">
           <h2 class="slide__title">Tu usado, tasado sin vueltas.</h2>
@@ -570,14 +578,11 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
             <a class="slide__link" href="#stock" data-all>Ver los autos en venta</a>
           </div>
         </div>
-        <div class="slide__art" aria-hidden="true">
-          <span class="slide__disc"></span><span class="slide__road"></span>
-          <svg class="art art--hero slide__car" viewBox="0 0 480 190"><use href="#car-sedan" transform="translate(480 0) scale(-1 1)"/></svg>
-        </div>
       </div>
     </article>
 
-    <article class="slide" aria-roledescription="slide" aria-label="3 de 3">
+    <article class="slide" role="group" aria-roledescription="diapositiva" aria-label="3 de 3">
+      <img class="slide__photo" src="6.jpg" alt="Renault Duster color arena" width="640" height="480" decoding="async" style="--pos:50% 50%">
       <div class="wrap slide__in">
         <div class="slide__text">
           <h2 class="slide__title">Financiamos tu próximo auto.</h2>
@@ -586,10 +591,6 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
             <a class="btn" data-wa data-wa-text="Hola Hernán, quiero consultar por la financiación." href="#">Consultar financiación</a>
             <a class="slide__link" href="#financiacion">Cómo funciona</a>
           </div>
-        </div>
-        <div class="slide__art" aria-hidden="true">
-          <span class="slide__disc"></span><span class="slide__road"></span>
-          <svg class="art art--hero slide__car" viewBox="0 0 480 190"><use href="#car-suv" transform="translate(480 0) scale(-1 1)"/></svg>
         </div>
       </div>
     </article>
@@ -626,8 +627,8 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
       <div class="sec__tools">
         <button class="link-btn" type="button" data-sede="rio-cuarto">Ver stock de Río Cuarto</button>
         <div class="sec__tools">
-          <button class="arrow" type="button" data-rail="prev" aria-label="Ver anteriores"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
-          <button class="arrow" type="button" data-rail="next" aria-label="Ver siguientes"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+          <button class="arrow" type="button" data-rail="prev" aria-label="Ver autos anteriores de Río Cuarto"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
+          <button class="arrow" type="button" data-rail="next" aria-label="Ver autos siguientes de Río Cuarto"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
         </div>
       </div>
     </div>
@@ -643,8 +644,8 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
       <div class="sec__tools">
         <button class="link-btn" type="button" data-sede="villa-maria">Ver stock de Villa María</button>
         <div class="sec__tools">
-          <button class="arrow" type="button" data-rail="prev" aria-label="Ver anteriores"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
-          <button class="arrow" type="button" data-rail="next" aria-label="Ver siguientes"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+          <button class="arrow" type="button" data-rail="prev" aria-label="Ver autos anteriores de Villa María"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
+          <button class="arrow" type="button" data-rail="next" aria-label="Ver autos siguientes de Villa María"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
         </div>
       </div>
     </div>
@@ -719,8 +720,8 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
     <div class="sec__head">
       <h2 class="sec__title" id="t-cli">Amigos que ya forman parte de nuestra historia</h2>
       <div class="sec__tools">
-        <button class="arrow" type="button" data-rail="prev" aria-label="Ver anteriores"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
-        <button class="arrow" type="button" data-rail="next" aria-label="Ver siguientes"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+        <button class="arrow" type="button" data-rail="prev" aria-label="Ver clientes anteriores"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
+        <button class="arrow" type="button" data-rail="next" aria-label="Ver clientes siguientes"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
       </div>
     </div>
     <ul class="rail" role="list" id="clientesRail"></ul>
@@ -854,6 +855,7 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
 
 <!-- ============ Diálogos ============ -->
 <dialog id="detalle" aria-labelledby="detalleTitulo">
+  <button class="modal__close" type="button" data-close aria-label="Cerrar detalle"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
   <div class="modal" id="detalleBody"></div>
 </dialog>
 
@@ -864,7 +866,7 @@ dialog.searchdlg{position:fixed;inset:0 0 auto 0;width:100%;margin:0}
       <form id="searchForm" role="search">
         <label for="searchInput">Buscá marca o modelo</label>
         <div class="searchbox__row">
-          <input class="input" id="searchInput" type="search" placeholder="Por ejemplo: Hilux, Cronos, Ford" autocomplete="off">
+          <input class="input" id="searchInput" type="search" placeholder="Por ejemplo: Hilux, Fiesta, Peugeot" autocomplete="off">
           <button class="btn btn--dark" type="submit">Buscar</button>
         </div>
       </form>
@@ -887,7 +889,6 @@ const CONFIG = {
   whatsapp: '5493584000000',
   // Texto del teléfono que se muestra en la barra de arriba. Vacío = muestra "Escribinos por WhatsApp".
   telefonoVisible: '',
-  email: '',
   // Redes: dejá vacío lo que no uses y el ícono no aparece.
   redes: { instagram: '', facebook: '', youtube: '' },
   // Los "id" de las sedes no se cambian. Los demás campos son opcionales.
@@ -897,37 +898,40 @@ const CONFIG = {
   ],
 };
 
-/* STOCK DE EJEMPLO. Reemplazar por los autos reales.
-   foto: ruta o URL de la imagen (si queda vacío se dibuja una silueta).
+/* STOCK DE EJEMPLO (maqueta): 5 fotos repetidas. Reemplazar por los autos reales.
+   foto: nombre del archivo de la foto. Si falta o no carga, se dibuja una silueta.
    transmision: 'AT' (automática) o 'MT' (manual).
    tipo: Pickup, SUV, Sedán o Hatchback.
    destacado: aparece en el carrusel de su sede.
    ingreso / nuevoPrecio / oferta: alimentan los botones "Ingresos", "Nuevos precios" y "Ofertas del día". */
 const AUTOS = [
-  { id: 1,  marca: 'Toyota',     modelo: 'Hilux',    version: '2.8 SRV 4x4 AT',          anio: 2019, km: 98000,  combustible: 'Diésel', transmision: 'AT', tipo: 'Pickup',    color: 'Blanco', precio: 36500, sede: 'rio-cuarto',  destacado: true, oferta: true,      foto: '', desc: '' },
-  { id: 2,  marca: 'Fiat',       modelo: 'Cronos',   version: '1.3 Drive',               anio: 2022, km: 41000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'Sedán',     color: 'Gris',   precio: 14800, sede: 'rio-cuarto',  destacado: true, ingreso: true,     foto: '', desc: '' },
-  { id: 3,  marca: 'Chevrolet',  modelo: 'Cruze',    version: '1.4T LTZ AT',             anio: 2018, km: 89000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'Sedán',     color: 'Negro',  precio: 15900, sede: 'rio-cuarto',  destacado: true,                  foto: '', desc: '' },
-  { id: 4,  marca: 'Peugeot',    modelo: '208',      version: '1.6 Feline AT',           anio: 2021, km: 52000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'Hatchback', color: 'Rojo',   precio: 15200, sede: 'rio-cuarto',  destacado: true, nuevoPrecio: true, foto: '', desc: '' },
-  { id: 5,  marca: 'Ford',       modelo: 'Ranger',   version: '3.2 Limited 4x4 AT',      anio: 2017, km: 124000, combustible: 'Diésel', transmision: 'AT', tipo: 'Pickup',    color: 'Gris',   precio: 27900, sede: 'rio-cuarto',  destacado: true, ingreso: true,     foto: '', desc: '' },
-  { id: 6,  marca: 'Renault',    modelo: 'Kwid',     version: '1.0 Iconic',              anio: 2022, km: 33000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'Hatchback', color: 'Blanco', precio: 9800,  sede: 'rio-cuarto',  destacado: true, nuevoPrecio: true, foto: '', desc: '' },
-  { id: 7,  marca: 'Volkswagen', modelo: 'Taos',     version: '1.4T Comfortline AT',     anio: 2022, km: 36000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'SUV',       color: 'Gris',   precio: 25900, sede: 'villa-maria', destacado: true, ingreso: true,     foto: '', desc: '' },
-  { id: 8,  marca: 'Fiat',       modelo: 'Toro',     version: '1.8 Freedom AT',          anio: 2021, km: 61000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'Pickup',    color: 'Plata',  precio: 24500, sede: 'villa-maria', destacado: true, oferta: true,      foto: '', desc: '' },
-  { id: 9,  marca: 'Ford',       modelo: 'EcoSport', version: '2.0 Titanium AT',         anio: 2019, km: 74000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'SUV',       color: 'Azul',   precio: 15700, sede: 'villa-maria', destacado: true,                  foto: '', desc: '' },
-  { id: 10, marca: 'Chevrolet',  modelo: 'S10',      version: '2.8 LTZ 4x4 AT',          anio: 2020, km: 82000,  combustible: 'Diésel', transmision: 'AT', tipo: 'Pickup',    color: 'Negro',  precio: 29900, sede: 'villa-maria', destacado: true, nuevoPrecio: true, foto: '', desc: '' },
-  { id: 11, marca: 'Volkswagen', modelo: 'Vento',    version: '1.4 TSI Comfortline',     anio: 2016, km: 98000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'Sedán',     color: 'Plata',  precio: 13900, sede: 'villa-maria', destacado: true,                  foto: '', desc: '' },
-  { id: 12, marca: 'Nissan',     modelo: 'Kicks',    version: '1.6 Exclusive CVT',       anio: 2021, km: 47000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'SUV',       color: 'Rojo',   precio: 19900, sede: 'villa-maria', destacado: true, ingreso: true,     foto: '', desc: '' },
+  { marca: 'Toyota',  modelo: 'Hilux',          version: '3.0 TDI 4x2 DC SR',      anio: 2010, km: 168000, combustible: 'Diésel', transmision: 'MT', tipo: 'Pickup',    color: 'Blanco',     precio: 18900, sede: 'rio-cuarto',  destacado: true, oferta: true,      foto: 'hilux.jpg' },
+  { marca: 'Peugeot', modelo: '2008',           version: '1.6 GT AT',              anio: 2023, km: 21000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'SUV',       color: 'Blanco',     precio: 28900, sede: 'rio-cuarto',  destacado: true, ingreso: true,     foto: '4.webp' },
+  { marca: 'Ford',    modelo: 'Fiesta Kinetic', version: '1.6 SE',                 anio: 2015, km: 87000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'Hatchback', color: 'Azul',       precio: 9900,  sede: 'rio-cuarto',  destacado: true, nuevoPrecio: true, foto: '2.jpg' },
+  { marca: 'Renault', modelo: 'Duster',         version: '1.6 Privilege',          anio: 2013, km: 112000, combustible: 'Nafta',  transmision: 'MT', tipo: 'SUV',       color: 'Arena',      precio: 11800, sede: 'rio-cuarto',  destacado: true,                  foto: '6.jpg' },
+  { marca: 'Citroën', modelo: 'C3 Aircross',    version: '1.6 Feel Pack',          anio: 2022, km: 38000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'SUV',       color: 'Gris plata', precio: 17500, sede: 'rio-cuarto',  destacado: true, ingreso: true,     foto: '1.jpg' },
+  { marca: 'Toyota',  modelo: 'Hilux',          version: '2.5 TD 4x4 DC SR',       anio: 2009, km: 205000, combustible: 'Diésel', transmision: 'MT', tipo: 'Pickup',    color: 'Blanco',     precio: 15900, sede: 'rio-cuarto',  destacado: true, nuevoPrecio: true, foto: 'hilux.jpg' },
+  { marca: 'Ford',    modelo: 'Fiesta Kinetic', version: '1.6 Titanium',           anio: 2016, km: 64000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'Hatchback', color: 'Azul',       precio: 11400, sede: 'villa-maria', destacado: true, ingreso: true,     foto: '2.jpg' },
+  { marca: 'Peugeot', modelo: '2008',           version: '1.6 Allure Pack',        anio: 2022, km: 33000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'SUV',       color: 'Blanco',     precio: 21900, sede: 'villa-maria', destacado: true, oferta: true,      foto: '4.webp' },
+  { marca: 'Renault', modelo: 'Duster',         version: '2.0 Dynamique 4x4',      anio: 2014, km: 96000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'SUV',       color: 'Arena',      precio: 13500, sede: 'villa-maria', destacado: true,                  foto: '6.jpg' },
+  { marca: 'Citroën', modelo: 'C3 Aircross',    version: '1.6 Shine AT',           anio: 2023, km: 22000,  combustible: 'Nafta',  transmision: 'AT', tipo: 'SUV',       color: 'Gris plata', precio: 20900, sede: 'villa-maria', destacado: true, nuevoPrecio: true, foto: '1.jpg' },
+  { marca: 'Toyota',  modelo: 'Hilux',          version: '3.0 TDI 4x4 DC SRV AT',  anio: 2011, km: 176000, combustible: 'Diésel', transmision: 'AT', tipo: 'Pickup',    color: 'Blanco',     precio: 19800, sede: 'villa-maria', destacado: true,                  foto: 'hilux.jpg' },
+  { marca: 'Ford',    modelo: 'Fiesta Kinetic', version: '1.6 S',                  anio: 2014, km: 99000,  combustible: 'Nafta',  transmision: 'MT', tipo: 'Hatchback', color: 'Azul',       precio: 8800,  sede: 'villa-maria', destacado: true,                  foto: '2.jpg' },
 ];
 
-/* CLIENTES DE EJEMPLO. Reemplazar por entregas reales, con permiso de cada cliente.
-   foto: opcional, si queda vacío se dibuja una silueta. silueta: pickup, suv, sedan o hatch. */
+/* CLIENTES DE EJEMPLO (maqueta). Reemplazar por entregas reales, con permiso de cada cliente.
+   foto: archivo de la foto. silueta (respaldo): pickup, suv, sedan o hatch. */
 const CLIENTES = [
-  { nombre: 'Familia Bustos',   auto: 'Toyota Hilux',       silueta: 'pickup', foto: '' },
-  { nombre: 'Romina Giménez',   auto: 'Chevrolet Cruze',    silueta: 'sedan',  foto: '' },
-  { nombre: 'Sergio Allende',   auto: 'Ford Ranger',        silueta: 'pickup', foto: '' },
-  { nombre: 'Carolina y Pablo', auto: 'Volkswagen Taos',    silueta: 'suv',    foto: '' },
-  { nombre: 'Familia Ferreyra', auto: 'Fiat Toro',          silueta: 'pickup', foto: '' },
-  { nombre: 'Martina y Lucas',  auto: 'Fiat Cronos',        silueta: 'sedan',  foto: '' },
+  { nombre: 'Familia Bustos',   auto: 'Toyota Hilux',        silueta: 'pickup', foto: 'hilux.jpg' },
+  { nombre: 'Romina Giménez',   auto: 'Ford Fiesta Kinetic', silueta: 'hatch',  foto: '2.jpg' },
+  { nombre: 'Sergio Allende',   auto: 'Peugeot 2008',        silueta: 'suv',    foto: '4.webp' },
+  { nombre: 'Carolina y Pablo', auto: 'Citroën C3 Aircross', silueta: 'suv',    foto: '1.jpg' },
+  { nombre: 'Familia Ferreyra', auto: 'Renault Duster',      silueta: 'suv',    foto: '6.jpg' },
+  { nombre: 'Martina y Lucas',  auto: 'Ford Fiesta Kinetic', silueta: 'hatch',  foto: '2.jpg' },
 ];
+
+// Encuadre de cada foto en las tarjetas (object-position). Lo que no esté acá se centra.
+const ENCUADRE = { 'hilux.jpg': '50% 85%', '4.webp': '50% 56%', '1.jpg': '50% 60%' };
 
 // Marcas del panel "Buscá por marca" (el número indica cuántos autos hay en stock).
 const MARCAS_PANEL = ['Fiat','Toyota','Chevrolet','Volkswagen','Ford','Renault','Peugeot','Citroën','Nissan','Honda'];
@@ -943,6 +947,8 @@ const miles = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 const precio = n => 'U$S ' + miles(n);
 const kms = n => miles(n) + ' km';
 const icon = (id, cls = '') => `<svg class="i ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const urlSegura = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '#';
+const telLimpio = t => String(t).replace(/[^+\d]/g, '');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const behavior = reduceMotion ? 'auto' : 'smooth';
 
@@ -951,20 +957,31 @@ const TRANS = { AT: 'Automática', MT: 'Manual' };
 const SILUETAS = { pickup: 'pickup', suv: 'suv', sedan: 'sedan', hatchback: 'hatch', hatch: 'hatch' };
 
 const sedeById = id => CONFIG.sedes.find(s => s.id === id) || { id: '', nombre: '' };
-const waNumber = sede => (sede && sede.whatsapp) || CONFIG.whatsapp;
+const waNumber = sede => String((sede && sede.whatsapp) || CONFIG.whatsapp).replace(/\D/g, '');
 const waLink = (texto, sedeId) => `https://wa.me/${waNumber(sedeId ? sedeById(sedeId) : null)}?text=${encodeURIComponent(texto)}`;
 const siluetaDe = c => SILUETAS[norm(c.tipo)] || 'sedan';
+const encuadre = f => ENCUADRE[f] || '50% 50%';
 
 if (CONFIG.whatsapp === '5493584000000') {
   console.warn('Hernán Automotores: CONFIG.whatsapp tiene el número de ejemplo. Reemplazalo por el real.');
 }
 
+// Si una foto no carga, se dibuja la silueta del auto en su lugar.
+document.addEventListener('error', e => {
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement) || !img.dataset.sil) return;
+  img.outerHTML = `<svg class="${img.dataset.fb}" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${img.dataset.sil}"/></svg>`;
+}, true);
+
 /* =========================================================
    3. PLANTILLAS
    ========================================================= */
 function mediaAuto(c) {
-  if (c.foto) return `<img class="car__photo" src="${esc(c.foto)}" alt="${esc(`${c.marca} ${c.modelo} ${c.version} ${c.anio}`)}" loading="lazy" decoding="async">`;
-  return `<svg class="art art--line car__art" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${siluetaDe(c)}"/></svg>`;
+  const sil = siluetaDe(c);
+  if (c.foto) {
+    return `<img class="car__photo" src="${esc(c.foto)}" alt="" style="object-position:${encuadre(c.foto)}" loading="lazy" decoding="async" data-sil="${sil}" data-fb="art art--line car__art">`;
+  }
+  return `<svg class="art art--line car__art" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${sil}"/></svg>`;
 }
 
 function cardHTML(c) {
@@ -973,35 +990,37 @@ function cardHTML(c) {
   if (c.oferta) tags.push('Oferta');
   if (c.ingreso) tags.push('Ingreso');
   if (c.nuevoPrecio) tags.push('Nuevo precio');
+  const trans = TRANS[c.transmision] || c.transmision;
   return `<article class="car">
     <div class="car__media">
       ${mediaAuto(c)}
-      <span class="car__year">${esc(c.anio)}</span>
-      <span class="car__sede">${icon('pin')}${esc(sede.nombre)}</span>
+      <span class="car__year" aria-hidden="true">${esc(c.anio)}</span>
+      <span class="car__sede" aria-hidden="true">${icon('pin')}${esc(sede.nombre)}</span>
       ${tags.length ? `<span class="car__tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</span>` : ''}
     </div>
     <div class="car__body">
       <div>
-        <h3 class="car__name"><button type="button" class="car__open" data-id="${c.id}">${esc(c.marca)} ${esc(c.modelo)}<span class="sr-only">, ${esc(c.anio)}, ${esc(sede.nombre)}</span></button></h3>
+        <h3 class="car__name"><button type="button" class="car__open" data-id="${AUTOS.indexOf(c)}">${esc(c.marca)} ${esc(c.modelo)}<span class="sr-only">, ${esc(c.anio)}, ${esc(sede.nombre)}</span></button></h3>
         <p class="car__ver">${esc(c.version)}</p>
       </div>
       <ul class="car__specs" role="list">
         <li>${icon('gauge')}${kms(c.km)}</li>
         <li>${icon('drop')}${esc(c.combustible)}</li>
-        <li>${icon('gear')}${esc(c.transmision)}</li>
+        <li>${icon('gear')}<span aria-hidden="true">${esc(c.transmision)}</span><span class="sr-only">Transmisión ${esc(trans)}</span></li>
       </ul>
       <div class="car__foot">
-        <span class="plate">${precio(c.precio)}</span>
-        <span class="car__more">Ver detalle${icon('right')}</span>
+        <span class="plate"><span aria-hidden="true">${precio(c.precio)}</span><span class="sr-only">${miles(c.precio)} dólares</span></span>
+        <span class="car__more" aria-hidden="true">Ver detalle${icon('right')}</span>
       </div>
     </div>
   </article>`;
 }
 
 function clienteHTML(c) {
+  const sil = SILUETAS[c.silueta] || 'sedan';
   const media = c.foto
-    ? `<img class="client__photo" src="${esc(c.foto)}" alt="${esc(`${c.nombre} con su ${c.auto}`)}" loading="lazy" decoding="async">`
-    : `<svg class="art art--solid client__art" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${SILUETAS[c.silueta] || 'sedan'}"/></svg>`;
+    ? `<img class="client__photo" src="${esc(c.foto)}" alt="" style="object-position:${encuadre(c.foto)}" loading="lazy" decoding="async" data-sil="${sil}" data-fb="art art--solid client__art">`
+    : `<svg class="art art--solid client__art" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${sil}"/></svg>`;
   return `<article class="client">
     <div class="client__media">${media}<span class="tag">Entregado</span></div>
     <div class="client__body">
@@ -1015,13 +1034,13 @@ function sedeHTML(s) {
   const filas = [];
   if (s.direccion) filas.push(`<li>${icon('pin')}<span>${esc(s.direccion)}</span></li>`);
   if (s.horario)   filas.push(`<li>${icon('clock')}<span>${esc(s.horario)}</span></li>`);
-  if (s.telefono)  filas.push(`<li>${icon('phone')}<a href="tel:${esc(s.telefono.replace(/[^+\d]/g, ''))}">${esc(s.telefono)}</a></li>`);
+  if (s.telefono)  filas.push(`<li>${icon('phone')}<a href="tel:${esc(telLimpio(s.telefono))}">${esc(s.telefono)}</a></li>`);
   return `<article class="sede">
     <h3 class="sede__name">${esc(s.nombre)}</h3>
     ${filas.length ? `<ul class="sede__rows" role="list">${filas.join('')}</ul>` : `<p class="sede__empty">Coordiná tu visita por WhatsApp.</p>`}
     <div class="sede__actions">
       <a class="btn btn--sm" href="${waLink(`Hola Hernán, quiero visitar la sede de ${s.nombre}.`, s.id)}" target="_blank" rel="noopener">${icon('wa')}Escribir a ${esc(s.nombre)}</a>
-      ${s.mapa ? `<a class="btn btn--sm btn--line" href="${esc(s.mapa)}" target="_blank" rel="noopener">Cómo llegar</a>` : ''}
+      ${s.mapa ? `<a class="btn btn--sm btn--line" href="${urlSegura(s.mapa)}" target="_blank" rel="noopener">Cómo llegar</a>` : ''}
     </div>
   </article>`;
 }
@@ -1032,24 +1051,25 @@ function detalleHTML(c) {
     ['Año', c.anio], ['Kilómetros', kms(c.km)], ['Combustible', c.combustible],
     ['Transmisión', TRANS[c.transmision] || c.transmision], ['Tipo', c.tipo], ['Color', c.color], ['Sede', sede.nombre],
   ];
-  const msg = `Hola Hernán, me interesa el ${c.marca} ${c.modelo} ${c.version} ${c.anio} (${precio(c.precio)}) que vi en la web. ¿Sigue disponible?`;
+  const nombre = `${c.marca} ${c.modelo} ${c.version} ${c.anio}`;
+  const msg = `Hola Hernán, me interesa el ${nombre} (${precio(c.precio)}) que vi en la web. ¿Sigue disponible?`;
+  const sil = siluetaDe(c);
   const media = c.foto
-    ? `<img src="${esc(c.foto)}" alt="${esc(`${c.marca} ${c.modelo} ${c.version} ${c.anio}`)}">`
-    : `<svg class="art art--line" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${siluetaDe(c)}"/></svg>`;
+    ? `<img src="${esc(c.foto)}" alt="${esc(`${c.marca} ${c.modelo} ${c.color.toLowerCase()}`)}" data-sil="${sil}" data-fb="art art--line">`
+    : `<svg class="art art--line" viewBox="0 0 480 190" aria-hidden="true"><use href="#car-${sil}"/></svg>`;
   return `
-    <button class="modal__close" type="button" data-close aria-label="Cerrar detalle">${icon('x')}</button>
-    <div class="modal__media">${media}<span class="modal__year">${esc(c.anio)}</span></div>
+    <div class="modal__media">${media}<span class="modal__year" aria-hidden="true">${esc(c.anio)}</span></div>
     <div class="modal__info">
       <div>
         <h2 class="modal__title" id="detalleTitulo">${esc(c.marca)} ${esc(c.modelo)}</h2>
         <p class="modal__ver">${esc(c.version)}</p>
       </div>
-      <span class="plate">${precio(c.precio)}</span>
+      <span class="plate"><span aria-hidden="true">${precio(c.precio)}</span><span class="sr-only">${miles(c.precio)} dólares</span></span>
       <dl class="specs">${filas.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
       <p class="modal__desc">${esc(c.desc || 'Escribinos y coordinamos para que lo veas y lo pruebes.')}</p>
       <div class="modal__actions">
         <a class="btn" href="${waLink(msg, c.sede)}" target="_blank" rel="noopener">${icon('wa')}Consultar por este auto</a>
-        ${sede.telefono ? `<a class="btn btn--line" href="tel:${esc(sede.telefono.replace(/[^+\d]/g, ''))}">${icon('phone')}Llamar</a>` : ''}
+        ${sede.telefono ? `<a class="btn btn--line" href="tel:${esc(telLimpio(sede.telefono))}">${icon('phone')}Llamar</a>` : ''}
       </div>
     </div>`;
 }
@@ -1109,6 +1129,7 @@ function syncControles() {
   $('#fSede').value = state.sede;
   $('#fMarca').value = state.marca;
   $('#fTipo').value = state.tipo;
+  [$('#fSede'), $('#fMarca'), $('#fTipo')].forEach(s => { if (s.selectedIndex < 0) s.selectedIndex = 0; });
   $('#searchInput').value = state.q;
 }
 
@@ -1156,7 +1177,7 @@ function renderTodo() {
   // Panel de marcas
   $('#brandGrid').innerHTML = MARCAS_PANEL.map(m => {
     const n = AUTOS.filter(c => norm(c.marca) === norm(m)).length;
-    return `<li><button type="button" class="brand-tile" data-marca="${esc(m)}">${esc(m)}${n ? `<span class="brand-tile__n" aria-label="${n} en stock">${n}</span>` : ''}</button></li>`;
+    return `<li><button type="button" class="brand-tile" data-marca="${esc(m)}">${esc(m)}${n ? `<span class="brand-tile__n" aria-hidden="true">${n}</span><span class="sr-only">, ${n} en stock</span>` : ''}</button></li>`;
   }).join('');
 
   // Sugerencias del buscador
@@ -1166,16 +1187,13 @@ function renderTodo() {
   // Redes
   const redes = [['instagram', 'Instagram'], ['facebook', 'Facebook'], ['youtube', 'YouTube']]
     .filter(([k]) => CONFIG.redes[k])
-    .map(([k, n]) => `<li><a href="${esc(CONFIG.redes[k])}" target="_blank" rel="noopener" aria-label="${n}">${icon(k)}</a></li>`);
+    .map(([k, n]) => `<li><a href="${urlSegura(CONFIG.redes[k])}" target="_blank" rel="noopener" aria-label="${n}">${icon(k)}</a></li>`);
   $('#footSocial').innerHTML = redes.join('');
 
   $('#year').textContent = new Date().getFullYear();
   renderStock();
 }
 
-/* =========================================================
-   6. WHATSAPP EN BOTONES Y ENLACES
-   ========================================================= */
 function cablearWhatsapp() {
   $$('[data-wa]').forEach(a => {
     a.href = waLink(a.dataset.waText || 'Hola Hernán, vi tu página y quiero consultar por un auto.');
@@ -1185,8 +1203,12 @@ function cablearWhatsapp() {
   if (CONFIG.telefonoVisible) $('#topWaLabel').textContent = CONFIG.telefonoVisible;
 }
 
+// Se dibuja todo ANTES de armar carruseles y flechas
+renderTodo();
+cablearWhatsapp();
+
 /* =========================================================
-   7. MENÚ
+   6. MENÚ
    ========================================================= */
 const nav = $('#menu'), navToggle = $('#navToggle');
 function cerrarSubmenus() {
@@ -1195,50 +1217,54 @@ function cerrarSubmenus() {
 function cerrarMenu() {
   nav.classList.remove('is-open');
   navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Abrir menú');
   cerrarSubmenus();
 }
 navToggle.addEventListener('click', () => {
   const abierto = nav.classList.toggle('is-open');
   navToggle.setAttribute('aria-expanded', String(abierto));
-  navToggle.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+  if (abierto) $('a, button', nav).focus();
 });
 matchMedia('(min-width: 980px)').addEventListener('change', cerrarMenu);
 
 /* =========================================================
-   8. HERO
+   7. HERO
    ========================================================= */
+const hero = $('.hero'), slidesBox = $('#slides');
 const slides = $$('#slides .slide'), dots = $$('#heroDots .dot'), pauseBtn = $('#heroPause');
 let actual = 0, timer = null, pausadoPorUsuario = reduceMotion;
 
 function mostrar(i) {
   actual = (i + slides.length) % slides.length;
   slides.forEach((s, k) => s.classList.toggle('is-active', k === actual));
-  dots.forEach((d, k) => d.toggleAttribute('aria-current', k === actual));
   dots.forEach((d, k) => { if (k === actual) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
 }
-function arrancar() { detener(); if (!pausadoPorUsuario) timer = setInterval(() => mostrar(actual + 1), 7000); }
-function detener() { clearInterval(timer); timer = null; }
+// Rota solo si nadie la pausó, el mouse no está encima, el foco no está adentro y la pestaña es visible.
+function programar() {
+  clearInterval(timer);
+  timer = null;
+  const rota = !pausadoPorUsuario && !document.hidden && !hero.matches(':hover') && !hero.contains(document.activeElement);
+  if (rota) timer = setInterval(() => mostrar(actual + 1), 7000);
+  slidesBox.setAttribute('aria-live', timer ? 'off' : 'polite');
+}
 function iconoPausa() {
   pauseBtn.innerHTML = icon(pausadoPorUsuario ? 'play' : 'pause');
   pauseBtn.setAttribute('aria-label', pausadoPorUsuario ? 'Reanudar rotación automática' : 'Pausar rotación automática');
 }
-$('#heroPrev').addEventListener('click', () => { mostrar(actual - 1); arrancar(); });
-$('#heroNext').addEventListener('click', () => { mostrar(actual + 1); arrancar(); });
-dots.forEach((d, k) => d.addEventListener('click', () => { mostrar(k); arrancar(); }));
-pauseBtn.addEventListener('click', () => { pausadoPorUsuario = !pausadoPorUsuario; iconoPausa(); pausadoPorUsuario ? detener() : arrancar(); });
-const hero = $('.hero');
-hero.addEventListener('mouseenter', detener);
-hero.addEventListener('mouseleave', arrancar);
-hero.addEventListener('focusin', detener);
-hero.addEventListener('focusout', arrancar);
-document.addEventListener('visibilitychange', () => document.hidden ? detener() : arrancar());
+// Si la persona maneja el carrusel a mano, la rotación automática se detiene.
+function manual(i) { pausadoPorUsuario = true; iconoPausa(); mostrar(i); programar(); }
+$('#heroPrev').addEventListener('click', () => manual(actual - 1));
+$('#heroNext').addEventListener('click', () => manual(actual + 1));
+dots.forEach((d, k) => d.addEventListener('click', () => manual(k)));
+pauseBtn.addEventListener('click', () => { pausadoPorUsuario = !pausadoPorUsuario; iconoPausa(); programar(); });
+['mouseenter', 'mouseleave', 'focusin', 'focusout'].forEach(ev => hero.addEventListener(ev, programar));
+document.addEventListener('visibilitychange', programar);
 iconoPausa();
-arrancar();
+programar();
 
 /* =========================================================
-   9. CARRUSELES
+   8. CARRUSELES
    ========================================================= */
+const railsListos = [];
 $$('[data-rail-section]').forEach(sec => {
   const rail = $('.rail', sec), prev = $('[data-rail=prev]', sec), next = $('[data-rail=next]', sec);
   if (!rail || !prev || !next) return;
@@ -1247,32 +1273,41 @@ $$('[data-rail-section]').forEach(sec => {
     const gap = parseFloat(getComputedStyle(rail).columnGap) || 22;
     return li ? li.getBoundingClientRect().width + gap : rail.clientWidth;
   };
+  const marcar = (btn, off) => btn.setAttribute('aria-disabled', String(off));
   const estado = () => {
-    prev.disabled = rail.scrollLeft <= 2;
-    next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2;
+    marcar(prev, rail.scrollLeft <= 2);
+    marcar(next, rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2);
   };
-  prev.addEventListener('click', () => rail.scrollBy({ left: -paso(), behavior }));
-  next.addEventListener('click', () => rail.scrollBy({ left: paso(), behavior }));
+  prev.addEventListener('click', () => { if (prev.getAttribute('aria-disabled') !== 'true') rail.scrollBy({ left: -paso(), behavior }); });
+  next.addEventListener('click', () => { if (next.getAttribute('aria-disabled') !== 'true') rail.scrollBy({ left: paso(), behavior }); });
   rail.addEventListener('scroll', estado, { passive: true });
-  addEventListener('resize', estado);
+  railsListos.push(estado);
   estado();
 });
+addEventListener('resize', () => railsListos.forEach(f => f()));
+addEventListener('load', () => railsListos.forEach(f => f()));
 
 /* =========================================================
-   10. DIÁLOGOS
+   9. DIÁLOGOS
    ========================================================= */
 const dlgDetalle = $('#detalle'), dlgBuscar = $('#searchDlg');
-function abrirDetalle(id) {
-  const c = AUTOS.find(a => a.id === id);
+function abrirDetalle(idx) {
+  const c = AUTOS[idx];
   if (!c) return;
   $('#detalleBody').innerHTML = detalleHTML(c);
   if (!dlgDetalle.open) dlgDetalle.showModal();
 }
 function abrirBuscador() {
+  cerrarMenu();
   if (!dlgBuscar.open) dlgBuscar.showModal();
   $('#searchInput').focus();
 }
-[dlgDetalle, dlgBuscar].forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+// Cierra al hacer clic en el fondo, pero no si se arrastró una selección de texto hasta ahí.
+[dlgDetalle, dlgBuscar].forEach(d => {
+  let inicio = null;
+  d.addEventListener('pointerdown', e => { inicio = e.target; });
+  d.addEventListener('click', e => { if (e.target === d && inicio === d) d.close(); });
+});
 $('#openSearch').addEventListener('click', abrirBuscador);
 $('#searchForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -1282,11 +1317,14 @@ $('#searchForm').addEventListener('submit', e => {
 });
 
 /* =========================================================
-   11. CLICS DELEGADOS
+   10. CLICS DELEGADOS
    ========================================================= */
 document.addEventListener('click', e => {
   const t = e.target;
   let el;
+
+  if (!t.closest('#menu, #navToggle')) cerrarMenu();
+  else if (!t.closest('.nav__item')) cerrarSubmenus();
 
   if ((el = t.closest('.car__open'))) { abrirDetalle(Number(el.dataset.id)); return; }
 
@@ -1295,6 +1333,7 @@ document.addEventListener('click', e => {
   if ((el = t.closest('[data-clear]'))) {
     if (el.dataset.clear === 'all') aplicar({}, false);
     else { state[el.dataset.clear] = ''; syncControles(); renderStock(); }
+    ($('#chips .chip') || $('#stockTitle')).focus({ preventScroll: true });
     return;
   }
 
@@ -1313,17 +1352,33 @@ document.addEventListener('click', e => {
     return;
   }
 
-  if (!t.closest('.nav__item')) cerrarSubmenus();
-  if (t.closest('.nav a[href^="#"]')) cerrarMenu();
+  if (t.closest('#menu a')) cerrarMenu();
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { cerrarSubmenus(); if (nav.classList.contains('is-open')) { cerrarMenu(); navToggle.focus(); } }
+  if (e.key !== 'Escape') return;
+  const abierto = $('.nav__item.open [data-sub]');
+  if (abierto) { cerrarSubmenus(); abierto.focus(); }
+  else if (nav.classList.contains('is-open')) { cerrarMenu(); navToggle.focus(); }
 });
 
 /* =========================================================
-   12. FORMULARIOS
+   11. FORMULARIOS
    ========================================================= */
+function marcarError(campo, err, mensaje) {
+  err.textContent = mensaje;
+  err.hidden = false;
+  const caja = campo.closest('.field');
+  if (caja && err.parentNode !== caja) caja.append(err);
+  campo.setAttribute('aria-invalid', 'true');
+  campo.setAttribute('aria-describedby', err.id);
+  campo.focus();
+}
+function limpiarErrores(form, err) {
+  err.hidden = true;
+  $$('[aria-invalid]', form).forEach(c => { c.removeAttribute('aria-invalid'); c.removeAttribute('aria-describedby'); });
+}
+
 $('#finder').addEventListener('submit', e => {
   e.preventDefault();
   aplicar({ sede: $('#fSede').value, marca: $('#fMarca').value, tipo: $('#fTipo').value });
@@ -1332,14 +1387,10 @@ $('#finder').addEventListener('submit', e => {
 $('#contacto').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target, err = $('#f-error');
+  limpiarErrores(f, err);
   const nombre = f.nombre.value.trim(), mensaje = f.mensaje.value.trim();
-  if (!nombre || !mensaje) {
-    err.textContent = !nombre ? 'Escribí tu nombre para poder responderte.' : 'Contanos en un mensaje qué necesitás.';
-    err.hidden = false;
-    (!nombre ? f.nombre : f.mensaje).focus();
-    return;
-  }
-  err.hidden = true;
+  if (!nombre) return marcarError(f.nombre, err, 'Escribí tu nombre para poder responderte.');
+  if (!mensaje) return marcarError(f.mensaje, err, 'Contanos en un mensaje qué necesitás.');
   const sede = CONFIG.sedes.find(s => s.nombre === f.sede.value);
   const partes = [`Hola Hernán, soy ${nombre}.`, `${f.interes.value}.`, mensaje];
   if (sede) partes.push(`Sede: ${sede.nombre}.`);
@@ -1349,19 +1400,15 @@ $('#contacto').addEventListener('submit', e => {
 
 $('#news').addEventListener('submit', e => {
   e.preventDefault();
-  const mail = $('#newsEmail').value.trim(), err = $('#newsError');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
-    err.textContent = 'Escribí un email válido, por ejemplo nombre@correo.com.';
-    err.hidden = false;
-    $('#newsEmail').focus();
-    return;
-  }
-  err.hidden = true;
+  const f = e.target, campo = $('#newsEmail'), err = $('#newsError');
+  limpiarErrores(f, err);
+  const mail = campo.value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return marcarError(campo, err, 'Escribí un email válido, por ejemplo nombre@correo.com.');
   window.open(waLink(`Hola Hernán, quiero enterarme cuando ingresen autos nuevos. Mi email: ${mail}`), '_blank', 'noopener');
 });
 
 /* =========================================================
-   13. VOLVER ARRIBA CON PROGRESO
+   12. VOLVER ARRIBA CON PROGRESO
    ========================================================= */
 const totop = $('#totop'), barra = $('#totopBar');
 const CIRC = 2 * Math.PI * 20;
@@ -1375,14 +1422,9 @@ function actualizarScroll() {
   totop.hidden = scrollY < 500;
 }
 addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(actualizarScroll); } }, { passive: true });
-totop.addEventListener('click', () => scrollTo({ top: 0, behavior }));
-$$('.logo').forEach(l => l.addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior }); }));
-
-/* =========================================================
-   ARRANQUE
-   ========================================================= */
-renderTodo();
-cablearWhatsapp();
+function arriba() { scrollTo({ top: 0, behavior }); }
+totop.addEventListener('click', () => { arriba(); $('.logo').focus({ preventScroll: true }); });
+$$('.logo').forEach(l => l.addEventListener('click', e => { e.preventDefault(); arriba(); }));
 actualizarScroll();
 })();
 </script>
